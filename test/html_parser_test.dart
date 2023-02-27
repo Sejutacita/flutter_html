@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_html/html_parser.dart';
+import 'package:flutter_html/src/html_elements.dart';
+import 'package:flutter_html/style.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -15,15 +18,14 @@ void main() {
       ),
     );
   });
-  testWidgets('Test new parser (hacky workaround to get BuildContext)',
-      (WidgetTester tester) async {
+  testWidgets('Test new parser (hacky workaround to get BuildContext)', (WidgetTester tester) async {
     await tester.pumpWidget(
       Builder(
         builder: (BuildContext context) {
           testNewParser(context);
 
           // The builder function must return a widget.
-          return const Placeholder();
+          return Placeholder();
         },
       ),
     );
@@ -33,105 +35,46 @@ void main() {
 void testNewParser(BuildContext context) {
   HtmlParser.parseHTML("<b>Hello, World!</b>");
 
-  HtmlParser.lexDomTree(
-    HtmlParser.parseHTML("Hello! <b>Hello, World!</b><i>Hello, New World!</i>"),
+  StyledElement tree = HtmlParser.lexDomTree(
+    HtmlParser.parseHTML(
+        "Hello! <b>Hello, World!</b><i>Hello, New World!</i>"),
     [],
-    Html.tags,
+    [],
+    null,
     context,
-    HtmlParser(
-      key: null,
-      htmlData: HtmlParser.parseHTML(
-          "Hello! <b>Hello, World!</b><i>Hello, New World!</i>"),
-      onLinkTap: null,
-      onAnchorTap: null,
-      onImageTap: null,
-      onCssParseError: null,
-      onImageError: null,
-      shrinkWrap: false,
-      selectable: true,
-      style: const {},
-      customRenders: generateDefaultRenders(),
-      tagsList: Html.tags,
-      selectionControls: null,
-      scrollPhysics: null,
-    ),
   );
+  print(tree.toString());
 
-  HtmlParser.lexDomTree(
+  tree = HtmlParser.lexDomTree(
     HtmlParser.parseHTML(
         "Hello, World! <a href='https://example.com'>This is a link</a>"),
     [],
-    Html.tags,
-    context,
-    HtmlParser(
-      key: null,
-      htmlData: HtmlParser.parseHTML(
-          "Hello, World! <a href='https://example.com'>This is a link</a>"),
-      onLinkTap: null,
-      onAnchorTap: null,
-      onImageTap: null,
-      onCssParseError: null,
-      onImageError: null,
-      shrinkWrap: false,
-      selectable: true,
-      style: const {},
-      customRenders: generateDefaultRenders(),
-      tagsList: Html.tags,
-      selectionControls: null,
-      scrollPhysics: null,
-    ),
-  );
-
-  HtmlParser.lexDomTree(
-    HtmlParser.parseHTML("<img alt='' src='https://image.example.com' />"),
     [],
-    Html.tags,
+    null,
     context,
-    HtmlParser(
-      key: null,
-      htmlData: HtmlParser.parseHTML(
-          "<img alt='' src='https://image.example.com' />"),
-      onLinkTap: null,
-      onAnchorTap: null,
-      onImageTap: null,
-      onCssParseError: null,
-      onImageError: null,
-      shrinkWrap: false,
-      selectable: true,
-      style: const {},
-      customRenders: generateDefaultRenders(),
-      tagsList: Html.tags,
-      selectionControls: null,
-      scrollPhysics: null,
-    ),
   );
+  print(tree.toString());
 
-  HtmlParser.lexDomTree(
+  tree = HtmlParser.lexDomTree(
+    HtmlParser.parseHTML("<img src='https://image.example.com' />"),
+    [],
+    [],
+    null,
+    context,
+  );
+  print(tree.toString());
+
+  tree = HtmlParser.lexDomTree(
     HtmlParser.parseHTML(
-        "<div><div><div><div><a href='https://example.com'>Link</a><div>Hello, World! <b>Bold and <i>Italic</i></b></div></div></div></div></div>"),
+        "<div><div><div><div><a href='link'>Link</a><div>Hello, World! <b>Bold and <i>Italic</i></b></div></div></div></div></div>"),
     [],
-    Html.tags,
+    [],
+    null,
     context,
-    HtmlParser(
-      key: null,
-      htmlData: HtmlParser.parseHTML(
-          "<div><div><div><div><a href='https://example.com'>Link</a><div>Hello, World! <b>Bold and <i>Italic</i></b></div></div></div></div></div>"),
-      onLinkTap: null,
-      onAnchorTap: null,
-      onImageTap: null,
-      onCssParseError: null,
-      onImageError: null,
-      shrinkWrap: false,
-      selectable: true,
-      style: const {},
-      customRenders: generateDefaultRenders(),
-      tagsList: Html.tags,
-      selectionControls: null,
-      scrollPhysics: null,
-    ),
   );
+  print(tree.toString());
 
-  /*ReplacedElement videoContentElement = parseReplacedElement(
+  ReplacedElement videoContentElement = parseReplacedElement(
     HtmlParser.parseHTML("""
       <video width="320" height="240" controls>
        <source src="movie.mp4" type="video/mp4">
@@ -168,10 +111,10 @@ void testNewParser(BuildContext context) {
         reason: "Controls isn't working");
     expect(audioContentElement.src, hasLength(2),
         reason: "Not enough sources...");
-  }*/
+  }
 
   Style style1 = Style(
-    display: Display.block,
+    display: Display.BLOCK,
     fontWeight: FontWeight.bold,
   );
 
@@ -183,7 +126,7 @@ void testNewParser(BuildContext context) {
 
   Style finalStyle = style1.merge(style2);
 
-  expect(finalStyle.display, equals(Display.block));
+  expect(finalStyle.display, equals(Display.BLOCK));
   expect(finalStyle.before, equals("* "));
   expect(finalStyle.direction, equals(TextDirection.rtl));
   expect(finalStyle.fontStyle, equals(FontStyle.italic));

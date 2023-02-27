@@ -1,32 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_html_all/flutter_html_all.dart';
 
-void main() => runApp(const MyApp());
+void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return new MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
+      theme: new ThemeData(
         primarySwatch: Colors.deepPurple,
       ),
-      home: const MyHomePage(title: 'flutter_html Example'),
+      home: new MyHomePage(title: 'flutter_html Example'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  MyHomePageState createState() => MyHomePageState();
+  _MyHomePageState createState() => new _MyHomePageState();
 }
 
 const htmlData = r"""
@@ -56,20 +53,10 @@ const htmlData = r"""
       <p>The should be <span style='color: rgba(0, 0, 0, 0.10);'>BLACK with 10% alpha style='color: rgba(0, 0, 0, 0.10);</span></p>
       <p>The should be <span style='color: rgb(0, 97, 0);'>GREEN style='color: rgb(0, 97, 0);</span></p>
       <p>The should be <span style='background-color: red; color: rgb(0, 97, 0);'>GREEN style='color: rgb(0, 97, 0);</span></p>
-      <h3>Text Alignment</h3>
-      <p style="text-align: center;"><span style="color: rgba(0, 0, 0, 0.95);">Center Aligned Text</span></p>
-      <p style="text-align: right;"><span style="color: rgba(0, 0, 0, 0.95);">Right Aligned Text</span></p>
-      <p style="text-align: justify;"><span style="color: rgba(0, 0, 0, 0.95);">Justified Text</span></p>
-      <p style="text-align: center;"><span style="color: rgba(0, 0, 0, 0.95);">Center Aligned Text</span></p>
-      <h3>Auto Margins</h3>
-      <div style="width: 150px; height: 20px; background-color: #ff9999;">Default Div</div>
-      <div style="width: 150px; height: 20px; background-color: #99ff99; margin: auto;">margin: auto</div>
-      <div style="width: 150px; height: 20px; background-color: #ff99ff; margin: 15px auto;">margin: 15px auto</div>
-      <div style="width: 150px; height: 20px; background-color: #9999ff; margin-left: auto;">margin-left: auto</div>
-      <p>With an image - non-block (should not center):</p>
-      <img alt='' style="margin: auto;" src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png">
-      <p>block image (should center):</p>
-      <img alt='' style="display: block; margin: auto;" src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png">
+      <p style="text-align: center;"><span style="color: rgba(0, 0, 0, 0.95);">blasdafjklasdlkjfkl</span></p>
+      <p style="text-align: right;"><span style="color: rgba(0, 0, 0, 0.95);">blasdafjklasdlkjfkl</span></p>
+      <p style="text-align: justify;"><span style="color: rgba(0, 0, 0, 0.95);">blasdafjklasdlkjfkl</span></p>
+      <p style="text-align: center;"><span style="color: rgba(0, 0, 0, 0.95);">blasdafjklasdlkjfkl</span></p>
       <h3>Table support (with custom styling!):</h3>
       <p>
       <q>Famous quote...</q>
@@ -84,7 +71,7 @@ const htmlData = r"""
       </thead>
       <tbody>
       <tr>
-        <td rowspan='2'>Rowspan<br>Rowspan<br>Rowspan<br>Rowspan<br>Rowspan<br>Rowspan<br>Rowspan<br>Rowspan<br>Rowspan<br>Rowspan</td><td>Data</td><td>Data</td>
+        <td rowspan='2'>Rowspan\nRowspan\nRowspan\nRowspan\nRowspan\nRowspan\nRowspan\nRowspan\nRowspan\nRowspan</td><td>Data</td><td>Data</td>
       </tr>
       <tr>
         <td colspan="2"><img alt='Google' src='https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png' /></td>
@@ -252,137 +239,94 @@ const htmlData = r"""
       <p id='bottom'><a href='#top'>Scroll to top</a></p>
 """;
 
-final staticAnchorKey = GlobalKey();
-
-class MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return new Scaffold(
       appBar: AppBar(
-        title: const Text('flutter_html Example'),
+        title: Text('flutter_html Example'),
         centerTitle: true,
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.arrow_downward),
-        onPressed: () {
-          final anchorContext =
-              AnchorKey.forId(staticAnchorKey, "bottom")?.currentContext;
-          if (anchorContext != null) {
-            Scrollable.ensureVisible(anchorContext);
-          }
-        },
       ),
       body: SingleChildScrollView(
         child: Html(
-          anchorKey: staticAnchorKey,
           data: htmlData,
+          tagsList: Html.tags..addAll(["bird", "flutter"]),
           style: {
             "table": Style(
-              backgroundColor: const Color.fromARGB(0x50, 0xee, 0xee, 0xee),
+              backgroundColor: Color.fromARGB(0x50, 0xee, 0xee, 0xee),
             ),
             "tr": Style(
-              border: const Border(bottom: BorderSide(color: Colors.grey)),
+              border: Border(bottom: BorderSide(color: Colors.grey)),
             ),
             "th": Style(
-              padding: const EdgeInsets.all(6),
+              padding: EdgeInsets.all(6),
               backgroundColor: Colors.grey,
             ),
             "td": Style(
-              padding: const EdgeInsets.all(6),
+              padding: EdgeInsets.all(6),
               alignment: Alignment.topLeft,
             ),
             'h5': Style(maxLines: 2, textOverflow: TextOverflow.ellipsis),
           },
-          tagsList: Html.tags..addAll(['tex', 'bird', 'flutter']),
-          customRenders: {
-            tagMatcher("tex"): CustomRender.widget(
-                widget: (context, buildChildren) => Math.tex(
-                      context.tree.element?.innerHtml ?? '',
-                      mathStyle: MathStyle.display,
-                      textStyle: context.style.generateTextStyle(),
-                      onErrorFallback: (FlutterMathException e) {
-                        return Text(e.message);
-                      },
-                    )),
-            tagMatcher("bird"): CustomRender.inlineSpan(
-                inlineSpan: (context, buildChildren) =>
-                    const TextSpan(text: "🐦")),
-            tagMatcher("flutter"): CustomRender.widget(
-                widget: (context, buildChildren) => FlutterLogo(
-                      style: (context.tree.element!.attributes['horizontal'] !=
-                              null)
-                          ? FlutterLogoStyle.horizontal
-                          : FlutterLogoStyle.markOnly,
-                      textColor: context.style.color!,
-                      size: context.style.fontSize!.value * 5,
-                    )),
-            tagMatcher("table"): CustomRender.widget(
-                widget: (context, buildChildren) => SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: tableRender
-                          .call()
-                          .widget!
-                          .call(context, buildChildren),
-                    )),
-            audioMatcher(): audioRender(),
-            iframeMatcher(): iframeRender(),
-            mathMatcher():
-                mathRender(onMathError: (error, exception, exceptionWithType) {
-              debugPrint(exception);
-              return Text(exception);
-            }),
-            svgTagMatcher(): svgTagRender(),
-            svgDataUriMatcher(): svgDataImageRender(),
-            svgAssetUriMatcher(): svgAssetImageRender(),
-            svgNetworkSourceMatcher(): svgNetworkImageRender(),
+          customRender: {
+            "table": (context, child) {
+              return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child:
+                    (context.tree as TableLayoutElement).toWidget(context),
+              );
+            },
+            "bird": (RenderContext context, Widget child) {
+              return TextSpan(text: "🐦");
+            },
+            "flutter": (RenderContext context, Widget child) {
+              return FlutterLogo(
+                style: (context.tree.element!.attributes['horizontal'] != null)
+                    ? FlutterLogoStyle.horizontal
+                    : FlutterLogoStyle.markOnly,
+                textColor: context.style.color!,
+                size: context.style.fontSize!.size! * 5,
+              );
+            },
+          },
+          customImageRenders: {
             networkSourceMatcher(domains: ["flutter.dev"]):
-                CustomRender.widget(widget: (context, buildChildren) {
-              return const FlutterLogo(size: 36);
-            }),
-            networkSourceMatcher(domains: ["mydomain.com"]): networkImageRender(
+                (context, attributes, element) {
+              return FlutterLogo(size: 36);
+            },
+            networkSourceMatcher(domains: ["mydomain.com"]):
+                networkImageRender(
               headers: {"Custom-Header": "some-value"},
               altWidget: (alt) => Text(alt ?? ""),
-              loadingWidget: () => const Text("Loading..."),
+              loadingWidget: () => Text("Loading..."),
             ),
             // On relative paths starting with /wiki, prefix with a base url
-            (context) =>
-                context.tree.element?.attributes["src"] != null &&
-                context.tree.element!.attributes["src"]!
-                    .startsWith("/wiki"): networkImageRender(
-                mapUrl: (url) => "https://upload.wikimedia.org${url!}"),
+            (attr, _) =>
+                    attr["src"] != null && attr["src"]!.startsWith("/wiki"):
+                networkImageRender(
+                    mapUrl: (url) => "https://upload.wikimedia.org" + url!),
             // Custom placeholder image for broken links
             networkSourceMatcher():
-                networkImageRender(altWidget: (_) => const FlutterLogo()),
-            videoMatcher(): videoRender(),
+                networkImageRender(altWidget: (_) => FlutterLogo()),
           },
           onLinkTap: (url, _, __, ___) {
-            debugPrint("Opening $url...");
+            print("Opening $url...");
           },
           onImageTap: (src, _, __, ___) {
-            debugPrint(src);
+            print(src);
           },
           onImageError: (exception, stackTrace) {
-            debugPrint(exception.toString());
+            print(exception);
           },
           onCssParseError: (css, messages) {
-            debugPrint("css that errored: $css");
-            debugPrint("error messages:");
-            for (var element in messages) {
-              debugPrint(element.toString());
-            }
-            return '';
+            print("css that errored: $css");
+            print("error messages:");
+            messages.forEach((element) {
+              print(element);
+            });
           },
         ),
       ),
     );
   }
 }
-
-CustomRenderMatcher texMatcher() =>
-    (context) => context.tree.element?.localName == 'tex';
-
-CustomRenderMatcher birdMatcher() =>
-    (context) => context.tree.element?.localName == 'bird';
-
-CustomRenderMatcher flutterMatcher() =>
-    (context) => context.tree.element?.localName == 'flutter';
