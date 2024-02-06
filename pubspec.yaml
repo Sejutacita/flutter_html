@@ -31,7 +31,7 @@ dependencies:
 
 
   # Plugin for rendering MathML
-  flutter_math_fork: '>=0.6.3+1 <1.0.0'
+  flutter_math_fork: '>=0.7.2 <1.0.0'
 
 
   # plugin for firstWhereOrNull extension on lists
